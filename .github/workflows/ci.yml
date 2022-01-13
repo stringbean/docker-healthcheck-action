@@ -1,0 +1,55 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Query missing container
+        uses: ./
+        id: missing-container
+        with:
+          container: unknown
+      - run: |
+          echo "::error::action output was '${{steps.missing-container.outputs.status}}, expected 'not-found'"
+          exit 1
+        if: ${{ steps.missing-container.outputs.status != 'not-found' }}
+
+      - run: docker run -d --rm --name hello-world crccheck/hello-world
+      - name: Wait for container status
+        uses: ./
+        id: container-wait
+        with:
+          container: hello-world
+          wait-time: 60
+          require-status: running
+          require-healthy: true
+      - run: |
+          echo "::error::action output was '${{steps.container-wait.outputs.status}}, expected 'running'"
+          exit 1
+        if: ${{ steps.container-wait.outputs.status != 'running' }}
+      - run: |
+          echo "::error::action output was '${{steps.container-wait.outputs.healthy}}', expected 'true'"
+          exit 1
+        if: ${{ steps.container-wait.outputs.healthy != 'true' }}
+
+      # reuse container from container-wait
+      - name: Query running container
+        uses: ./
+        id: running-container
+        with:
+          container: hello-world
+      - run: |
+          echo "::error::action output was '${{steps.running-container.outputs.status}}, expected 'running'"
+          exit 1
+        if: ${{ steps.running-container.outputs.status != 'running' }}

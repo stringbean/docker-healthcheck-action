@@ -1,0 +1,28 @@
+name: Docker Healthcheck
+description: Checks the health of a Docker container
+
+inputs:
+  container:
+    description: Name of the container to check
+    required: true
+  require-status:
+    description: Status
+    required: false
+  require-healthy:
+    description: Healthy
+    required: false
+    default: 'false'
+  wait-time:
+    description: Maximum number of seconds to wait for container to reach required status (in seconds)
+    required: false
+    default: '0'
+
+outputs:
+  status:
+    description: Current status of the container
+  healthy:
+    description: true if the container is healthy
+
+runs:
+  using: node12
+  main: dist/index.js
