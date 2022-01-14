@@ -1,15 +1,19 @@
-name: Docker Healthcheck
+name: Docker Health Check
 description: Checks the health of a Docker container
+author: Michael Stringer
+branding:
+  color: blue
+  icon: activity
 
 inputs:
   container:
     description: Name of the container to check
     required: true
   require-status:
-    description: Status
+    description: Container status to require or wait for
     required: false
   require-healthy:
-    description: Healthy
+    description: If true then require the container to be healthy or wait until healthy
     required: false
     default: 'false'
   wait-time:
