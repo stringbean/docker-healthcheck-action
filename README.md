@@ -13,7 +13,7 @@ jobs:
   test:
     steps:
       - name: Get container status
-        uses: stringbean/docker-healthcheck-action
+        uses: stringbean/docker-healthcheck-action@v1
         id: missing-container
         with:
           container: unknown
@@ -34,7 +34,7 @@ jobs:
       - name: Start container
         run: docker run -d --rm --name hello-world crccheck/hello-world
       - name: Wait for container
-        uses: stringbean/docker-healthcheck-action
+        uses: stringbean/docker-healthcheck-action@v1
         with:
           container: hello-world
           wait-time: 50
