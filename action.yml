@@ -28,5 +28,5 @@ outputs:
     description: true if the container is healthy
 
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
