@@ -1,8 +1,0 @@
-{
-  "extends": "@tsconfig/node16/tsconfig.json",
-  "compilerOptions": {
-    "rootDir": "src",
-    "moduleResolution": "node"
-  },
-  "include": ["src"]
-}
